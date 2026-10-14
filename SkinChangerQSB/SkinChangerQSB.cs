@@ -6,6 +6,8 @@ using QSB.Utility;
 using QSB.WorldSync;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using HarmonyLib;
 using UnityEngine;
 
 namespace SkinChangerQSB;
@@ -26,6 +28,12 @@ public class SkinChangerQSB : MonoBehaviour
 
     public void Start()
     {
+        var harmony = new Harmony("pikpik_carrot.SkinChangerQSB");
+        harmony.PatchAll(Assembly.GetExecutingAssembly());
+
+        QSBEmotesCompatibility.Init();
+        QSBEmotesCompatibility.InitializeNetworking();
+        
         SkinChanger.SkinChanger.instance.skinChanged += OnSkinChanged;
 
         Instance = this;
@@ -100,10 +108,10 @@ public class SkinChangerQSB : MonoBehaviour
         {
             // Backwards compat from the Inhabitant clothing customization update
             // Clothing choices are not synced: Could be a cool feature in the future
-            if (skinName == "Inhabitant")
-            {
-                skinName = "Inhabitant_QSB";
-            }
+            // if (skinName == "Inhabitant")
+            // {
+            //     skinName = "Inhabitant_QSB";
+            // }
             if (_skins.TryGetValue(player.PlayerId, out var skin))
             {
                 if (skin.skinName == skinName)

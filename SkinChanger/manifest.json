@@ -4,7 +4,7 @@
   "author": "pikpik_carrot, JohnCorby, SBtT, xen",
   "name": "ULTIMATE Skin Changer",
   "uniqueName": "pikpik_carrot.SkinChanger",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "owmlVersion": "2.13.0",
   "conflicts": [ "xen.QSBSkins" ]
 }

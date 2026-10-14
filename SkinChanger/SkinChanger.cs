@@ -10,6 +10,8 @@ using Newtonsoft.Json.Linq;
 using System.Linq;
 using static SkinChanger.SkinChangerAPI;
 using System.ComponentModel.Design;
+using HarmonyLib;
+using SkinChanger.Emote_System;
 
 namespace SkinChanger
 {
@@ -57,7 +59,7 @@ namespace SkinChanger
 			public float ColliderHeight;
 			public Vector3 ColliderCenter;
 
-			public PlayableCharacter(string prefabName, string settingName, Vector3 camOffset, float collRadius, float collHeight, Vector3 collCenter)
+			public PlayableCharacter(string prefabName, string settingName, Vector3 camOffset, float collRadius, float collHeight, Vector3 collCenter, bool hasEmotes = false)
 			{
 				GameObject = prefabName != null ? Instantiate(instance.prefabs[prefabName]) : instance.Traveller_HEA_Player_v2; // this line nres
 				SettingName = settingName;
@@ -66,6 +68,9 @@ namespace SkinChanger
 				ColliderRadius = collRadius;
 				ColliderHeight = collHeight;
 				ColliderCenter = collCenter;
+
+				if (hasEmotes)
+					GameObject.AddComponent<EmoteController>();
 			}
 		}
 
@@ -127,6 +132,7 @@ namespace SkinChanger
 			{
 				if (Path.GetExtension(path) == ".manifest") continue; // ignore the non bundle files
 				if (path == "Assets") continue; // This shouldn't be in the release but if it snuck in ignore it
+				if (path == "audio") continue; // Not a skin bundle, only used in the Emote Controller
 
 				LoadPrefab(path);
 			}
@@ -149,15 +155,15 @@ namespace SkinChanger
 				// make the instances of the prefabs
 				characters = new List<PlayableCharacter>()
 				{
-					//Unity Object name                                //Setting Name      //Camera Offset                     //Collider Radius, Height, Center
+					//Unity Object name                                //Setting Name      //Camera Offset                     //Collider Radius, Height, Center                // Has Emotes?     
 					new PlayableCharacter(null /*uses existing v2*/,   "Hatchling",        new Vector3(0, 0.8496093f, 0.15f),  0.5f, 2f,         Vector3.zero),
-					new PlayableCharacter("Traveller_HEA_Player_v3",   "Inhabitant",       new Vector3(0, 2.5004f, 0.5701f),        0.5f, 3.6f,       new Vector3(0f, 0.875f, 0f)),
-					new PlayableCharacter("Traveller_HEA_Player_v4",   "Nomai",            new Vector3(0, 1.1f, 0.3f),         0.5f, 2.5f,       new Vector3(0f, 0.3f, 0f)),
-					new PlayableCharacter("Traveller_HEA_Player_v5",   "Chert",            new Vector3(0, 0.3f, 0.2f),         0.5f, 1.5f,       new Vector3(0f, -0.2f, 0f)),
-					new PlayableCharacter("Traveller_HEA_Player_v6",   "Esker",            new Vector3(0, 0.9f, 0.2f),         0.5f, 2f,         Vector3.zero),
-					new PlayableCharacter("Traveller_HEA_Player_v7",   "Riebeck",          new Vector3(0, 1.1f, 0.3f),         0.5f, 2.5f,       new Vector3(0f, 0.25f, 0)),
-					new PlayableCharacter("Traveller_HEA_Player_v8",   "Gabbro",           new Vector3(0, 1.1f, 0.2f),         0.5f, 2.5f,       new Vector3(0f, 0.25f, 0)),
-					new PlayableCharacter("Traveller_HEA_Player_v9",   "Feldspar",         new Vector3(0f, 0.8f, 0.2f),        0.5f, 2f,         Vector3.zero),
+					new PlayableCharacter("Traveller_HEA_Player_v3",   "Inhabitant",       new Vector3(0, 2.5004f, 0.5701f),   0.5f, 3.6f,       new Vector3(0f, 0.875f, 0f),   true),
+					new PlayableCharacter("Traveller_HEA_Player_v4",   "Nomai",            new Vector3(0, 1.1f, 0.3f),         0.5f, 2.5f,       new Vector3(0f, 0.3f, 0f),     true),
+					new PlayableCharacter("Traveller_HEA_Player_v5",   "Chert",            new Vector3(0, 0.3f, 0.2f),         0.5f, 1.5f,       new Vector3(0f, -0.2f, 0f),    true),
+					new PlayableCharacter("Traveller_HEA_Player_v6",   "Esker",            new Vector3(0, 0.9f, 0.2f),         0.5f, 2f,         Vector3.zero,                  true),
+					new PlayableCharacter("Traveller_HEA_Player_v7",   "Riebeck",          new Vector3(0, 1.1f, 0.3f),         0.5f, 2.5f,       new Vector3(0f, 0.25f, 0),     true),
+					new PlayableCharacter("Traveller_HEA_Player_v8",   "Gabbro",           new Vector3(0, 1.1f, 0.2f),         0.5f, 2.5f,       new Vector3(0f, 0.25f, 0),     true),
+					new PlayableCharacter("Traveller_HEA_Player_v9",   "Feldspar",         new Vector3(0f, 0.8f, 0.2f),        0.5f, 2f,         Vector3.zero,                  true),
 					new PlayableCharacter("Traveller_HEA_Player_v10",  "Slate",            new Vector3(0, 1.2f, 0.2f),         0.5f, 2.5f,       new Vector3(0f, 0.25f, 0)),
 					new PlayableCharacter("Traveller_HEA_Player_v11",  "Hal",              new Vector3(0, 0.8496093f,          0.15f), 0.5f, 2f, Vector3.zero),
 					new PlayableCharacter("Traveller_HEA_Player_v12",  "Hornfels",         new Vector3(0, 1.1f, 0.2f),         0.5f, 2.5f,       new Vector3(0f, 0.25f, 0)),
@@ -380,7 +386,7 @@ namespace SkinChanger
 								ghostColors[i] = GameObject.Find("Player_Body/Traveller_HEA_Player_v3(Clone)/" + ghostColorNames[i] + "/player_mesh_noSuit:Traveller_HEA_Player/Ghostbird_Skin_01:Ghostbird_v004:Ghostbird_IP/Ghostbird_Skin_01:Ghostbird_v004:Ghostbird_Merged");
 							}
 						}
-
+					
 						// ghost robe color setup
 						for (int i = 0; i < ghostColorNames.Length; i++) // loops through all colors (total of 11)
 						{
@@ -418,7 +424,7 @@ namespace SkinChanger
 								ghostColors[i].SetActive(false); // deactivates all other colors that are inactive
 							}
 						}
-
+					
 						// antlers setup (loops through all 6 antlers)
 						for (int i = 0; i < 6; i++)
 						{
@@ -431,7 +437,7 @@ namespace SkinChanger
 							{
 								ghostAntlersL[i].SetActive(false); // otherwise set it to false.
 							}
-
+					
 							// right antler setup
 							if (i == ((int)ghostAntlerR[0] - '0') - 1)  // gets the number at the first char of the current antler string
 							{
@@ -442,7 +448,7 @@ namespace SkinChanger
 								ghostAntlersR[i].SetActive(false); // otherwise set it to false.
 							}
 						}
-
+					
 						// accessories setup
 						// ghost left bracelet setup
 						if (ghostBraceletL)
@@ -453,7 +459,7 @@ namespace SkinChanger
 						{
 							ghostAccessories[0].SetActive(false); // otherwise sets it to false.
 						}
-
+					
 						// ghost right bracelet setup
 						if (ghostBraceletR)
 						{
@@ -463,7 +469,7 @@ namespace SkinChanger
 						{
 							ghostAccessories[1].SetActive(false); // otherwise sets it to false.
 						}
-
+					
 						// ghost necklace setup
 						if (ghostNecklace)
 						{

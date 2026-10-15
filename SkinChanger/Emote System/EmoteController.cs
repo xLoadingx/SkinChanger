@@ -10,6 +10,15 @@ using static SkinChanger.SkinChanger;
 
 namespace SkinChanger.Emote_System;
 
+public static class TransformExtension
+{
+	public static bool IsLocalPlayer(this Transform trans)
+	{
+		var playerBody = Locator.GetPlayerBody();
+		return playerBody != null && trans.IsChildOf(playerBody.transform);
+	}
+}
+
 public class Emote
 {
 	// Honestly this is probably too much but eh, flexibility is good
@@ -670,7 +679,7 @@ public class EmoteController : MonoBehaviour
 
 		#region Esker
 
-		var whistleClip = AudioBundle.LoadAsset<AudioClip>("OW_TravelerTheme_whistle.ogg");
+		var whistleClip = AudioBundle.LoadAsset<AudioClip>("OW_TravelerTheme_whistling.ogg");
 
 		emotes[EmoteType.Esker_PlayInstrument] = new Emote(
 		    animator,
@@ -735,7 +744,7 @@ public class EmoteController : MonoBehaviour
 			_emoteEnteredState = false;
 		}
 
-		if (IsLocalPlayer())
+		if (transform.IsLocalPlayer())
 			onEmoteStart?.Invoke(type);
 
 		return true;
@@ -745,7 +754,7 @@ public class EmoteController : MonoBehaviour
 	{
 		CurrentEmote?.Release();
 		
-		if (IsLocalPlayer())
+		if (transform.IsLocalPlayer())
 			onEmoteReleased?.Invoke();
 	}
 
@@ -760,12 +769,6 @@ public class EmoteController : MonoBehaviour
 		_emoteEnteredState = false;
 	}
 
-	private bool IsLocalPlayer()
-	{
-		var playerBody = Locator.GetPlayerBody();
-		return playerBody != null && transform.IsChildOf(playerBody.transform);
-	}
-
 	public void Update()
 	{
 		if (animator.runtimeAnimatorController != _lastController)
@@ -773,7 +776,7 @@ public class EmoteController : MonoBehaviour
 		
 		// Would run for all remote players if we didn't
 		// making them all play the same animation lmao
-		if (IsLocalPlayer())
+		if (transform.IsLocalPlayer())
 		{
 			// Will have to find a better input solution
 			var kb = Keyboard.current;
@@ -798,6 +801,10 @@ public class EmoteController : MonoBehaviour
 					"Inhabitant" => (EmoteType.Inhabitant_Prisoner_PlayInstrument, 10),
 					"Nomai" => (EmoteType.Nomai_PlayingMusic, 8),
 					"Riebeck" => (EmoteType.Riebeck_PlayingMusic, 3),
+					"Feldspar" => (EmoteType.Feldspar_PlayInstrument, 3),
+					"Gabbro" => (EmoteType.Gabbro_PlayInstrument, 3),
+					"Chert" => (EmoteType.Chert_PlayInstrument, 3),
+					"Esker" => (EmoteType.Esker_PlayInstrument, 2),
 					_ => throw new ArgumentOutOfRangeException()
 				};
 

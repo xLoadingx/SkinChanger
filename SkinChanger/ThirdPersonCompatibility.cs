@@ -12,7 +12,7 @@ public class ThirdPersonCompatibility : MonoBehaviour
 
 	private bool _isHeadVisible = false;
 
-	public const string INHABITANT_HEAD_PATH = "player_mesh_noSuit:Traveller_HEA_Player/Ghostbird_Skin_01:Ghostbird_Rig_V01:Base/Ghostbird_Skin_01:Ghostbird_Rig_V01:Root/Ghostbird_Skin_01:Ghostbird_Rig_V01:Spine01/Ghostbird_Skin_01:Ghostbird_Rig_V01:Spine02/Ghostbird_Skin_01:Ghostbird_Rig_V01:Spine03/Ghostbird_Skin_01:Ghostbird_Rig_V01:Spine04/Ghostbird_Skin_01:Ghostbird_Rig_V01:Neck01/Ghostbird_Skin_01:Ghostbird_Rig_V01:Neck02/Ghostbird_Skin_01:Ghostbird_Rig_V01:Head/player_mesh_noSuit:Traveller_HEA_Player (1)";
+	public const string INHABITANT_HEAD_PATH = "player_mesh_noSuit:Traveller_HEA_Player/Ghostbird_Skin_01:Ghostbird_v004:Ghostbird_IP/Ghostbird_Skin_01:Ghostbird_v004:Ghostbird_Merged_Head";
 	public const string NOMAI_HEAD_PATH = "Nomai_ANIM_SkyWatching_Idle/Nomai_Mesh:Mesh/Nomai_Mesh:Props_NOM_Mask_GearNew/Nomai_Mesh:Props_NOM_Mask_GearNew_Geo";
 
 	public void Start()

@@ -71,6 +71,19 @@
 			"tooltip": "Changes the color of the Inhabitant's clothing.",
 			"value": "RED"
 		},
+		"Inhabitant Skin": {
+			"dlcOnly": true,
+			"type": "selector",
+			"options": [
+				"DEFAULT",
+				"COOL",
+				"DUST",
+				"FLORAL",
+				"WARM"
+			],
+			"tooltip": "Changes the color of the Inhabitant's skin.",
+			"value": "DEFAULT"
+		},
 		"Inhabitant Left Antler": {
 			"dlcOnly": true,
 			"type": "selector",

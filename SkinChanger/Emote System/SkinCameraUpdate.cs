@@ -34,7 +34,7 @@ public class SkinCameraUpdate : MonoBehaviour
 
 		var headPosition = player.InverseTransformPoint(head.position);
 
-		if (!_emoteController.IsEmoting)
+		if (!_emoteController?.IsEmoting ?? true)
 			_restingHeadPosition = headPosition;
 
 		if (originalOffset.HasValue)

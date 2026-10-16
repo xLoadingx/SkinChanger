@@ -358,6 +358,9 @@ namespace SkinChanger
 					    && character.SettingName != "Nomai"
 					)
 						skinCameraUpdate.originalOffset = character.CameraOffset;
+					
+					if (character.SettingName == "Hatchling")
+						PlayerCamera._origLocalPosition = character.CameraOffset;
 
 					if (useCollider)
 					{
@@ -376,6 +379,7 @@ namespace SkinChanger
 					// Fix this customization in a specific commit
 					// Add actual instruments / props to Nomai and Inhabitant (include Artifact in customization OR make it hold an artifact the correct way)
 					// Add the rest of the Hearthians (pain-maxxing)
+					// Another person changing skins causes others with the same skin to stop their emote
 					
 					// // inhabitant customization
 					// if (modelSetting == "Inhabitant")
